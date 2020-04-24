@@ -71,7 +71,7 @@ endf
 command! -nargs=1 GvimTweakSetAlpha call s:SetAlpha(<args>)
 command! GvimTweakToggleTopMost call s:ToggleTopMost()
 command! GvimTweakToggleMaximize call s:ToggleMaximize()
-command! GvimTweakToggleFullScreen call s:ToggleFullScreen()
+command! -bar GvimTweakToggleFullScreen call s:ToggleFullScreen()
 
 augroup load_gvimtweak
   autocmd!
