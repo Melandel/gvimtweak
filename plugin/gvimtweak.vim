@@ -37,14 +37,16 @@ if !exists('g:gvimtweak#fullscreen_dll_path')
 endif
 
 func! s:SetAlpha(alpha)
-  if 180 <= a:alpha && a:alpha <= 255
+	let alphamin = 140
+	let alphamax = 255
+  if alphamin <= a:alpha && a:alpha <= alphamax
     let g:gvimtweak#window_alpha = a:alpha
   else
     let g:gvimtweak#window_alpha = g:gvimtweak#window_alpha + a:alpha
-    if g:gvimtweak#window_alpha < 180
-      let g:gvimtweak#window_alpha = 180
-    elseif g:gvimtweak#window_alpha > 255
-      let g:gvimtweak#window_alpha = 255
+    if g:gvimtweak#window_alpha < alphamin
+      let g:gvimtweak#window_alpha = alphamin
+    elseif g:gvimtweak#window_alpha > alphamax
+      let g:gvimtweak#window_alpha = alphamax
     endif
   endif
   call libcall(g:gvimtweak#dll_path, 'SetAlpha', g:gvimtweak#window_alpha)
@@ -68,7 +70,7 @@ func! s:ToggleFullScreen()
   let g:gvimtweak#fullscreen = libcall(g:gvimtweak#fullscreen_dll_path, 'ToggleFullScreen', g:gvimtweak#fullscreen)
 endf
 
-command! -nargs=1 GvimTweakSetAlpha call s:SetAlpha(<args>)
+command! -nargs=1 -bar GvimTweakSetAlpha call s:SetAlpha(<args>)
 command! GvimTweakToggleTopMost call s:ToggleTopMost()
 command! GvimTweakToggleMaximize call s:ToggleMaximize()
 command! -bar GvimTweakToggleFullScreen call s:ToggleFullScreen()
