@@ -36,21 +36,26 @@ if !exists('g:gvimtweak#fullscreen_dll_path')
   unlet s:gvimtweak_fullscreen_dll_basename
 endif
 
+let g:alphamin = 140
+let g:alphamax = 255
 func! s:SetAlpha(alpha)
-	let alphamin = 140
-	let alphamax = 255
-  if alphamin <= a:alpha && a:alpha <= alphamax
+  if g:alphamin <= a:alpha && a:alpha <= g:alphamax
     let g:gvimtweak#window_alpha = a:alpha
   else
     let g:gvimtweak#window_alpha = g:gvimtweak#window_alpha + a:alpha
-    if g:gvimtweak#window_alpha < alphamin
-      let g:gvimtweak#window_alpha = alphamin
-    elseif g:gvimtweak#window_alpha > alphamax
-      let g:gvimtweak#window_alpha = alphamax
+    if g:gvimtweak#window_alpha < g:alphamin
+      let g:gvimtweak#window_alpha = g:alphamin
+    elseif g:gvimtweak#window_alpha > g:alphamax
+      let g:gvimtweak#window_alpha = g:alphamax
     endif
   endif
   call libcall(g:gvimtweak#dll_path, 'SetAlpha', g:gvimtweak#window_alpha)
 endf
+
+func! s:ToggleTransparency()
+	call s:SetAlpha(g:gvimtweak#window_alpha != g:alphamax ? g:alphamax : g:alphamin)
+endf
+command! -bar GvimTweakToggleTransparency call s:ToggleTransparency()
 
 let g:gvimtweak#topmost = g:gvimtweak#enable_topmost_at_startup ? 1 : 0
 func! s:ToggleTopMost()
